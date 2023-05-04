@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="WetMe.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:WetMe"
+    xmlns:pages="clr-namespace:WetMe.Pages"
+    Shell.FlyoutBehavior="Disabled">
+
+    <!--Login Page-->
+    <ShellContent
+        Title="Login"
+        ContentTemplate="{DataTemplate pages:LoginPage}"
+        Route="login"/>
+
+    <!--Mode Page-->
+    <ShellContent
+        Title="Mode"
+        ContentTemplate="{DataTemplate pages:ModePage}"
+        Route="mode"/>
+  
+
+
+    <!--ManualMode Page-->
+    <ShellContent
+        Title="Manual Mode"
+        ContentTemplate="{DataTemplate pages:ManualModePage}"
+        Route="manual-mode" FlyoutItemIsVisible="True" Icon="manualicon.png"/>
+
+    <!--TimerMode Page-->
+    <ShellContent
+        Title="Timer Mode"
+        ContentTemplate="{DataTemplate pages:TimerModePage}"
+        Route="timer-mode"/>
+
+    <!--SensorMode Page-->
+    <ShellContent
+        Title="Sensor Mode"
+        ContentTemplate="{DataTemplate pages:SensorModePage}"
+        Route="sensor-mode"/>
+
+</Shell>

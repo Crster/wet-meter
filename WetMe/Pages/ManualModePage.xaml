@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:drawable="clr-namespace:WetMe.Graphs"
+             x:Class="WetMe.Pages.ManualModePage"
+             Title="Manual Mode of Watering">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20, 5, 20, 10" Spacing="10">
+            <!--<HorizontalStackLayout Spacing="20">
+                <VerticalStackLayout>
+                    <Label Text="Data Start:"/>
+                    <DatePicker x:Name="FromDate" MinimumDate="01/01/2023"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout>
+                    <Label Text="Data End:"/>
+                    <DatePicker x:Name="ToDate" MinimumDate="01/01/2023"/>
+                </VerticalStackLayout>
+            </HorizontalStackLayout>-->
+
+
+            <Label Text="Note: Timer and Sensor Mode is inactive" TextColor="LightSalmon"/>
+            <Button Text="Activate Manual Mode" Clicked="Submit_Clicked"/>
+            <Button Text="Deactivate Manual Mode" Clicked="Stop_Clicked"/>
+            
+            <Border Padding="5" HeightRequest="300" Stroke="#000000" BackgroundColor="White">
+                <GraphicsView x:Name="MoistureGraphView">
+                    <GraphicsView.Drawable>
+                        <drawable:Moisture x:Name="MoistureGraph"/>
+                    </GraphicsView.Drawable>
+                </GraphicsView>
+            </Border>
+            
+            <Editor x:Name="MoistureLog" IsReadOnly="True" MinimumHeightRequest="300" Text="Loading..."/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

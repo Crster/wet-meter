@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:drawable="clr-namespace:WetMe.Graphs"
+             x:Class="WetMe.Pages.TimerModePage"
+             Title="Timer Mode of Watering">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20, 5, 20, 10" Spacing="10">
+            <HorizontalStackLayout Spacing="20">
+                <VerticalStackLayout>
+                    <Label Text="Timer Start:"/>
+                    <DatePicker x:Name="FromDate" MinimumDate="01/01/2023"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout>
+                    <Label Text="Timer End:"/>
+                    <DatePicker x:Name="ToDate" MinimumDate="01/01/2023"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout>
+                    <Label Text="Water Every:"/>
+                    <Picker x:Name="Interval" SelectedIndex="3">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>3 Second</x:String>
+                                <x:String>5 Second</x:String>
+                                <x:String>5 Minutes</x:String>
+                                <x:String>1 Hour</x:String>
+                                <x:String>12 Hour</x:String>
+                                <x:String>Day</x:String>
+                                <x:String>Other Day</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+
+            <Button x:Name="Submit" Text="Activate Timer Mode" Clicked="Submit_Clicked"/>
+
+            <Border Padding="5" HeightRequest="300" Stroke="#000000" BackgroundColor="White">
+                <GraphicsView x:Name="MoistureGraphView">
+                    <GraphicsView.Drawable>
+                        <drawable:Moisture x:Name="MoistureGraph"/>
+                    </GraphicsView.Drawable>
+                </GraphicsView>
+            </Border>
+
+            <Editor x:Name="MoistureLog" IsReadOnly="True" MinimumHeightRequest="300" Text="Loading..."/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

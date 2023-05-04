@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WetMe.Pages.ModePage"
+             Title="Watering System" BackgroundImageSource="wateringbg.png">
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Margin="50, 100">
+            <Button x:Name="ManualButton" Text="Manual" ImageSource="manualicon.png" HeightRequest="100" Clicked="ManualMode_Clicked"/>
+            <Button x:Name="SensorButton" Text="Sensor" ImageSource="sensoricon.png" HeightRequest="100" Clicked="SensorMode_Clicked"/>
+            <Button x:Name="TimerButton" Text="Timer" ImageSource="timericon.png" HeightRequest="100" Clicked="TimerMode_Clicked"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage> 
