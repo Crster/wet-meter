@@ -24,7 +24,9 @@
                 </GraphicsView>
             </Border>
 
-            <Editor x:Name="MoistureLog" IsReadOnly="True" MinimumHeightRequest="300" Text="Loading..."/>
+            <Editor x:Name="MoistureLog" IsReadOnly="True" HeightRequest="100" Text=""/>
+            <Label Text="History:"></Label>
+            <Editor x:Name="History" IsReadOnly="True" AutoSize="Disabled" HeightRequest="400" Text=""/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

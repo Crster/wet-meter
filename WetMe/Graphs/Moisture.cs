@@ -11,22 +11,58 @@ namespace WetMe.Graphs
 {
     public class Moisture : IDrawable
     {
-        private int _waterLevel = 0;
-
         public int LowLevel { get; set; }
+
+        public bool IsWaterLevelChanged { get; private set; }
+        public string WaterLevelStatus { get; private set; }
+        public int WaterLevel { get; private set; }
 
         private List<MoistureData> moistures = new List<MoistureData>();
         public void AddData(MoistureData data)
         {
             if (data != null)
             {
-                _waterLevel = data.Moisture;
+                WaterLevel = data.Moisture;
+                if (WaterLevel > LowLevel)
+                {
+                    if (WaterLevelStatus != "WET")
+                    {
+                        IsWaterLevelChanged = true;
+                        WaterLevelStatus = "WET";
+                    }
+                    else
+                    {
+                        IsWaterLevelChanged = false;
+                    }
+                }
+                else
+                {
+                    if (WaterLevelStatus != "DRY")
+                    {
+                        IsWaterLevelChanged = true;
+                        WaterLevelStatus = "DRY";
+                    } 
+                    else
+                    {
+                        IsWaterLevelChanged = false;
+                    }
+                }
+
                 moistures.Add(data);
             }
         }
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
+            if (WaterLevelStatus == "DRY")
+            {
+                canvas.FontColor = Colors.Black;
+            }
+            else
+            {
+                canvas.FontColor = Colors.Green;
+            }
+
             RectF rect = new RectF(dirtyRect.X + 5, dirtyRect.Y + 10, dirtyRect.Width - 10, dirtyRect.Height - 20);
 
             RectF graphRect = new RectF(rect.X + 35, rect.Y + 5, rect.Width - 30, rect.Height - 25);
@@ -84,15 +120,9 @@ namespace WetMe.Graphs
                 newPathX += xSpacing;
             }
 
-            if (_waterLevel > LowLevel)
-            {
-                canvas.DrawString("SOIL (WET)", graphRect.Left + (graphRect.Width / 2), graphRect.Top - 5, HorizontalAlignment.Center);
-            }
-            else
-            {
-                canvas.DrawString("SOIL (DRY)", graphRect.Left + (graphRect.Width / 2), graphRect.Top - 5, HorizontalAlignment.Center);
-            }
+            canvas.DrawString($"SOIL ({WaterLevelStatus})", graphRect.Left + (graphRect.Width / 2), graphRect.Top - 5, HorizontalAlignment.Center);
 
+            canvas.FontColor = Colors.Black;
             canvas.StrokeColor = Colors.Blue;
             canvas.StrokeSize = 2;
             canvas.DrawPath(path);

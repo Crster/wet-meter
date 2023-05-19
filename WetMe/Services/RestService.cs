@@ -1,9 +1,4 @@
 ﻿using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WetMe.Services
 {
@@ -13,7 +8,11 @@ namespace WetMe.Services
 
         public RestService()
         {
+#if DEBUG
+            var option = new RestClientOptions("http://127.0.0.1:80");
+#else
             var option = new RestClientOptions("http://192.168.1.111:80");
+#endif
             restClient = new RestClient(option);
         }
 

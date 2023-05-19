@@ -5,6 +5,7 @@ namespace WetMe.Pages;
 
 public partial class ManualModePage : ContentPage
 {
+    string historyLogPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/manual.log";
     private RestService restService;
 
     IDispatcherTimer timer;
@@ -21,6 +22,11 @@ public partial class ManualModePage : ContentPage
 
     protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
+        if (File.Exists(historyLogPath))
+        {
+            History.Text = File.ReadAllText(historyLogPath);
+        }
+
         timer.Start();
         base.OnNavigatedTo(args);
     }
@@ -39,18 +45,28 @@ public partial class ManualModePage : ContentPage
             Moisture = restService.GetWaterLevel()
         };
 
-        MoistureLog.Text = MoistureLog.Text.Insert(MoistureLog.Text.Length,Environment.NewLine + data.DateTime.ToString() + ": " + data.Moisture.ToString());
+        MoistureLog.Text = MoistureLog.Text.Insert(0, Environment.NewLine + data.DateTime.ToString() + ": " + data.Moisture.ToString());
         MoistureGraph.AddData(data);
         MoistureGraphView.Invalidate();
+
+        if (MoistureGraph.IsWaterLevelChanged)
+        {
+            History.Text = History.Text.Insert(0, Environment.NewLine + DateTime.Now.ToString() + ": " + $"Water Level is {MoistureGraph.WaterLevelStatus} ({MoistureGraph.WaterLevel})");
+            File.WriteAllText(historyLogPath, History.Text);
+        }
     }
 
     private void Submit_Clicked(object sender, EventArgs e)
     {
         restService.SetManualMode();
+        History.Text = History.Text.Insert(0, Environment.NewLine + DateTime.Now.ToString() + ": Manual mode activated");
+        File.WriteAllText(historyLogPath, History.Text);
     }
 
     private void Stop_Clicked(object sender, EventArgs e)
     {
         restService.StopPump();
+        History.Text = History.Text.Insert(0, Environment.NewLine + DateTime.Now.ToString() + ": Pump stopped");
+        File.WriteAllText(historyLogPath, History.Text);
     }
 }

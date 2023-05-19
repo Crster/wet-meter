@@ -2,3 +2,6 @@
 /WetMe/.vs
 /WetMe/bin
 /WetMe/obj
+
+*/node_modules
+*.apk

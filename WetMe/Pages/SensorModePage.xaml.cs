@@ -5,6 +5,7 @@ namespace WetMe.Pages;
 
 public partial class SensorModePage : ContentPage
 {
+    string historyLogPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/manual.log";
     RestService restService;
 
     IDispatcherTimer timer;
@@ -21,6 +22,11 @@ public partial class SensorModePage : ContentPage
 
     protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
+        if (File.Exists(historyLogPath))
+        {
+            History.Text = File.ReadAllText(historyLogPath);
+        }
+
         timer.Start();
         base.OnNavigatedTo(args);
     }
@@ -39,9 +45,15 @@ public partial class SensorModePage : ContentPage
             Moisture = restService.GetWaterLevel()
         };
 
-        MoistureLog.Text = MoistureLog.Text.Insert(MoistureLog.Text.Length,Environment.NewLine + data.DateTime.ToString() + ": " + data.Moisture.ToString());
+        MoistureLog.Text = MoistureLog.Text.Insert(0 ,Environment.NewLine + data.DateTime.ToString() + ": " + data.Moisture.ToString());
         MoistureGraph.AddData(data);
         MoistureGraphView.Invalidate();
+
+        if (MoistureGraph.IsWaterLevelChanged)
+        {
+            History.Text = History.Text.Insert(0, Environment.NewLine + DateTime.Now.ToString() + ": " + $"Water Level is {MoistureGraph.WaterLevelStatus} ({MoistureGraph.WaterLevel})");
+            File.WriteAllText(historyLogPath, History.Text);
+        }
     }
 
     private async void Submit_Clicked(object sender, EventArgs e)
@@ -54,6 +66,10 @@ public partial class SensorModePage : ContentPage
             {
                 MoistureGraph.LowLevel = lowLevel;
             }
+
+            History.Text = History.Text.Insert(0, Environment.NewLine + DateTime.Now.ToString() + ": Sensor mode activated");
+            History.Text = History.Text.Insert(0, Environment.NewLine + DateTime.Now.ToString() + $": Low level is set to {lowLevel}");
+            File.WriteAllText(historyLogPath, History.Text);
         }
         else
         {
