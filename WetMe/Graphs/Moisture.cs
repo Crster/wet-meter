@@ -11,12 +11,18 @@ namespace WetMe.Graphs
 {
     public class Moisture : IDrawable
     {
+        private int _waterLevel = 0;
+
         public int LowLevel { get; set; }
 
         private List<MoistureData> moistures = new List<MoistureData>();
         public void AddData(MoistureData data)
         {
-            moistures.Add(data);
+            if (data != null)
+            {
+                _waterLevel = data.Moisture;
+                moistures.Add(data);
+            }
         }
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
@@ -76,6 +82,15 @@ namespace WetMe.Graphs
                 path.LineTo(dataRect.X, dataRect.Y);
                 // canvas.DrawString(data.Moisture.ToString(), dataRect.X, dataRect.Y, 20, 12, HorizontalAlignment.Left, VerticalAlignment.Center);
                 newPathX += xSpacing;
+            }
+
+            if (_waterLevel > LowLevel)
+            {
+                canvas.DrawString("SOIL (WET)", graphRect.Left + (graphRect.Width / 2), graphRect.Top - 5, HorizontalAlignment.Center);
+            }
+            else
+            {
+                canvas.DrawString("SOIL (DRY)", graphRect.Left + (graphRect.Width / 2), graphRect.Top - 5, HorizontalAlignment.Center);
             }
 
             canvas.StrokeColor = Colors.Blue;

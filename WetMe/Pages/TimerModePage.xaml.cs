@@ -8,6 +8,8 @@ public partial class TimerModePage : ContentPage
     RestService restService;
     bool isTimerMode = false;
 
+    string timerLogPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/timer.log";
+
     IDispatcherTimer timer;
     public TimerModePage()
     {
@@ -36,6 +38,11 @@ public partial class TimerModePage : ContentPage
             isTimerMode = false;
         }
 
+        if (File.Exists(timerLogPath))
+        {
+            TimerLog.Text = File.ReadAllText(timerLogPath);
+        }
+
         base.OnNavigatedTo(args);
     }
 
@@ -53,16 +60,18 @@ public partial class TimerModePage : ContentPage
             Moisture = restService.GetWaterLevel()
         };
 
-        MoistureLog.Text = MoistureLog.Text.Insert(MoistureLog.Text.Length,Environment.NewLine + data.DateTime.ToString() + ": " + data.Moisture.ToString());
+        MoistureLog.Text = MoistureLog.Text.Insert(MoistureLog.Text.Length, Environment.NewLine + data.DateTime.ToString() + ": " + data.Moisture.ToString());
         MoistureGraph.AddData(data);
         MoistureGraphView.Invalidate();
     }
 
     private void Submit_Clicked(object sender, EventArgs e)
     {
+        isTimerMode = !isTimerMode;
         if (isTimerMode)
         {
             restService.StopPump();
+            TimerLog.Text = TimerLog.Text.Insert(0, Environment.NewLine + DateTime.Now.ToString() + ": " + "Timer Stopped");
         }
         else
         {
@@ -83,6 +92,10 @@ public partial class TimerModePage : ContentPage
                     restService.SetTimerMode(1000 * 60 * 60);
                     break;
             }
+
+            TimerLog.Text = TimerLog.Text.Insert(0, Environment.NewLine + DateTime.Now.ToString() + ": " + $"Timer Started (From: {FromDate.Date.ToShortDateString()} To: {ToDate.Date.ToShortDateString()} Interval: {value})");
+
+            File.WriteAllText(timerLogPath, TimerLog.Text);
         }
     }
 }

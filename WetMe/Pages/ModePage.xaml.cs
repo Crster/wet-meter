@@ -41,7 +41,7 @@ public partial class ModePage : ContentPage
             ManualButton.IsEnabled = true;
             SensorButton.IsEnabled = true;
             TimerButton.IsEnabled = true;
-        } 
+        }
         else
         {
             ManualButton.IsEnabled = false;

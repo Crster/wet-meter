@@ -46,7 +46,10 @@
                 </GraphicsView>
             </Border>
 
-            <Editor x:Name="MoistureLog" IsReadOnly="True" MinimumHeightRequest="300" Text="Loading..."/>
+            <Editor x:Name="MoistureLog" IsReadOnly="True" MinimumHeightRequest="100" Text="Loading..."/>
+            <Label Text="Timer Logs:"></Label>
+            <Editor x:Name="TimerLog" IsReadOnly="True" AutoSize="TextChanges" Text=""/>
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
