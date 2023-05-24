@@ -101,5 +101,17 @@ public partial class TimerModePage : ContentPage
             History.Text = History.Text.Insert(0, Environment.NewLine + DateTime.Now.ToString() + ": " + $"Timer Started (From: {FromDate.Date.ToShortDateString()} To: {ToDate.Date.ToShortDateString()} Interval: {value})");
             File.WriteAllText(historyLogPath, History.Text);
         }
+
+        string mode = restService.GetMode();
+        if (mode == "Timer")
+        {
+            Submit.Text = "Deactivate Timer Mode";
+            isTimerMode = true;
+        }
+        else
+        {
+            Submit.Text = "Activate Timer Mode";
+            isTimerMode = false;
+        }
     }
 }
